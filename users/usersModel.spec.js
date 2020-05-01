@@ -9,18 +9,11 @@ describe("Users Model", () => {
       const userCount = await db("users");
       expect(userCount).toHaveLength(1);
     });
-    // it("should add a single hobbit", async () => {
-    //   let hobbit = await Hobbits.insert({ name: "sam" });
-    //   expect(hobbit.name).toBe("sam");
-
-    //   hobbit = await Hobbits.insert({ name: "jojo" });
-    //   expect(hobbit.name).toBe("jojo");
-    // });
     it("test ability to remove users", async () => {
       await Users.remove(1);
 
       const userCount = await db("users");
-      expect(userCount).toHaveLength(23);
+      expect(userCount).toHaveLength(0);
     });
   });
 });
@@ -28,3 +21,11 @@ describe("Users Model", () => {
 beforeEach(async () => {
   await db("users").truncate();
 });
+
+// it("should add a single hobbit", async () => {
+//   let hobbit = await Hobbits.insert({ name: "sam" });
+//   expect(hobbit.name).toBe("sam");
+
+//   hobbit = await Hobbits.insert({ name: "jojo" });
+//   expect(hobbit.name).toBe("jojo");
+// });

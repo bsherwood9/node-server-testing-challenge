@@ -2,7 +2,7 @@ const db = require("../data/dbConfig.js");
 
 module.exports = {
   add,
-  update,
+  updateUser,
   remove,
   getAll,
   findById,
@@ -13,8 +13,8 @@ async function add(user) {
   return db("users").where({ id }).first();
 }
 
-async function update(id, changes) {
-  return null;
+async function updateUser(id, changes) {
+  return db("users").where({ id }).update(changes);
 }
 
 function remove(id) {
@@ -26,5 +26,5 @@ function getAll() {
 }
 
 function findById(id) {
-  return null;
+  return db("users").where({ id }).first();
 }
