@@ -21,17 +21,20 @@ describe("server", () => {
   });
   describe("Post /api/users", () => {
     it("post returns 200", async () => {
+      const name = Math.random().toString();
       const res = await request(server)
         .post("/api/users")
-        .send({ username: "Doug", password: "cat" });
+        .send({ username: name, password: "cats" });
       expect(res.status).toBe(200);
     });
     it("post successfully creates user", async () => {
+      const name = Math.random().toString();
       const res = await request(server)
         .post("/api/users")
-        .send({ username: "Doug1", password: "cat1" });
-      expect(res.body.username).toBe("Doug1");
+        .send({ username: name, password: "cat1" });
+      expect(res.body.username).toBe(name);
       expect(res.body.password).toBe("cat1");
+      const red = await request(server).delete(`/api/user/${res.body.id}`);
     });
     it("post successfully creates user", async () => {
       const res = await request(server).get("/api/users/1");
@@ -39,15 +42,23 @@ describe("server", () => {
     });
   });
   describe("Delete /api/users/:id", () => {
-    it("delete returns 200 and number of users deleted", async () => {
-      const res = await request(server).delete("/api/users/1");
-      expect(res.status).toBe(200);
-      expect(res.body).toBe(1);
-    });
+    // it("delete returns 200 and number of users deleted", async () => {
+    //   const res = await request(server).delete("/api/users/3");
+    //   expect(res.status).toBe(200);
+    //   expect(res.body).toBe(1);
+    // });
     it("user no longer exists", async () => {
       const res = await request(server).get("/api/users/1");
       expect(res.status).toBe(401);
       expect(res.body.message).toBe("Could not find that user");
+    });
+    it("A whole new world", async () => {
+      const res = await request(server)
+        .post("/api/users")
+        .send({ username: "fake", password: "cat12" });
+      const delRes = await request(server).delete(`/api/users/${res.body.id}`);
+      expect(delRes.status).toBe(200);
+      expect(delRes.body).toBe(1);
     });
   });
 });
